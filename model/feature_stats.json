@@ -1,0 +1,92 @@
+{
+  "Year": {
+    "min": 2000.0,
+    "max": 2015.0,
+    "mean": 2007.5187
+  },
+  "Status": {
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.1743
+  },
+  "Adult Mortality": {
+    "min": 1.0,
+    "max": 723.0,
+    "mean": 164.7964
+  },
+  "Alcohol": {
+    "min": 0.01,
+    "max": 17.87,
+    "mean": 4.6029
+  },
+  "percentage expenditure": {
+    "min": 0.0,
+    "max": 19479.9116,
+    "mean": 738.2513
+  },
+  "Hepatitis B": {
+    "min": 1.0,
+    "max": 99.0,
+    "mean": 80.9405
+  },
+  "Measles": {
+    "min": 0.0,
+    "max": 212183.0,
+    "mean": 2419.5922
+  },
+  "BMI": {
+    "min": 1.0,
+    "max": 87.3,
+    "mean": 38.3212
+  },
+  "under-five deaths": {
+    "min": 0.0,
+    "max": 2500.0,
+    "mean": 42.0357
+  },
+  "Polio": {
+    "min": 3.0,
+    "max": 99.0,
+    "mean": 82.5502
+  },
+  "Total expenditure": {
+    "min": 0.37,
+    "max": 17.6,
+    "mean": 5.9382
+  },
+  "Diphtheria": {
+    "min": 2.0,
+    "max": 99.0,
+    "mean": 82.3241
+  },
+  "HIV/AIDS": {
+    "min": 0.1,
+    "max": 50.6,
+    "mean": 1.7421
+  },
+  "GDP": {
+    "min": 1.6813,
+    "max": 119172.7418,
+    "mean": 7483.1585
+  },
+  "Population": {
+    "min": 34.0,
+    "max": 1293859294.0,
+    "mean": 12753375.1201
+  },
+  "thinness  1-19 years": {
+    "min": 0.1,
+    "max": 27.7,
+    "mean": 4.8397
+  },
+  "Income composition of resources": {
+    "min": 0.0,
+    "max": 0.948,
+    "mean": 0.6276
+  },
+  "Schooling": {
+    "min": 0.0,
+    "max": 20.7,
+    "mean": 11.9928
+  }
+}
