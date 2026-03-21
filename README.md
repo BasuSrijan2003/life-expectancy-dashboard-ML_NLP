@@ -8,6 +8,9 @@
 An end-to-end Machine Learning pipeline and interactive web application that predicts the average life expectancy of a country based on demographic, economic, and health-related factors.
 
 **🔴 Live Demo:** https://life-expectancy-prediction-2026.streamlit.app/
+
+
+
 **🌐 Contact Owner:** https://srijanbasu.netlify.app/
 
 ---
