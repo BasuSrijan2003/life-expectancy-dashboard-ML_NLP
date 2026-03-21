@@ -7,7 +7,8 @@
 
 An end-to-end Machine Learning pipeline and interactive web application that predicts the average life expectancy of a country based on demographic, economic, and health-related factors.
 
-**🔴 Live Demo:** *(Add your Streamlit Cloud link here once deployed)*
+**🔴 Live Demo:** https://life-expectancy-prediction-2026.streamlit.app/
+**🌐 Contact Owner:** https://srijanbasu.netlify.app/
 
 ---
 
@@ -97,12 +98,6 @@ pip install -r requirements.txt
 python train_model.py
 ```
 
-This will:
-
-* Read the dataset
-* Train the Random Forest model
-* Save model files in `/model`
-
 ### 5️⃣ Run the App
 
 ```bash
@@ -134,15 +129,14 @@ Master of Computer Applications (MCA)
 
 📧 [2003srijanbasu@gmail.com](mailto:2003srijanbasu@gmail.com)
 
-🔗 Add your LinkedIn
-🔗 Add your GitHub
+🔗 https://srijanbasu.netlify.app/
 
 ---
 
 ## 💡 Future Improvements
 
 * Add more advanced XAI (SHAP values)
-* Deploy on Streamlit Cloud / AWS
+* Deploy on AWS
 * Improve UI/UX
 * Add country-wise visualization dashboards
 
