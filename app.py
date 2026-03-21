@@ -1,10 +1,42 @@
 import json
+import os
 import joblib
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+
+# ── AUTO-TRAIN IF MODEL NOT FOUND (runs on Streamlit Cloud cold start) ─────────
+if not os.path.exists("model/rf_model.pkl"):
+    _df = pd.read_csv("data/Life Expectancy Data.csv")
+    _df.columns = _df.columns.str.strip()
+    _df["Status"] = _df["Status"].map({"Developing": 0, "Developed": 1})
+    _df = _df.drop(columns=["Country", "infant deaths", "thinness 5-9 years"])
+    _df["Life expectancy"] = _df["Life expectancy"].fillna(_df["Life expectancy"].mean())
+    _df = _df.fillna(_df.mean(numeric_only=True))
+    X  = _df.drop(columns=["Life expectancy"])
+    y  = _df["Life expectancy"]
+    X_train, _, y_train, _ = train_test_split(X, y, test_size=0.2, random_state=42)
+    _model = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
+    _model.fit(X_train, y_train)
+    os.makedirs("model", exist_ok=True)
+    joblib.dump(_model, "model/rf_model.pkl")
+    feat_names = X_train.columns.tolist()
+    feat_stats = {
+        c: {
+            "min":  round(float(X[c].min()),  4),
+            "max":  round(float(X[c].max()),  4),
+            "mean": round(float(X[c].mean()), 4),
+        }
+        for c in feat_names
+    }
+    with open("model/feature_names.json", "w") as f:
+        json.dump(feat_names, f, indent=2)
+    with open("model/feature_stats.json", "w") as f:
+        json.dump(feat_stats, f, indent=2)
 
 # ── PAGE CONFIG ────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -184,24 +216,24 @@ with tab1:
         status_enc = 1 if r["Status"] == "Developed" else 0
 
         input_dict = {
-            "Year":                          float(r["Year"]),
-            "Status":                        status_enc,
-            "Adult Mortality":               safe(r, "Adult Mortality",               "Adult Mortality"),
-            "Alcohol":                       safe(r, "Alcohol",                       "Alcohol"),
-            "percentage expenditure":        safe(r, "percentage expenditure",        "percentage expenditure"),
-            "Hepatitis B":                   safe(r, "Hepatitis B",                   "Hepatitis B"),
-            "Measles":                       safe(r, "Measles",                       "Measles"),
-            "BMI":                           safe(r, " BMI ",                         "BMI"),
-            "under-five deaths":             safe(r, "under-five deaths",             "under-five deaths"),
-            "Polio":                         safe(r, "Polio",                         "Polio"),
-            "Total expenditure":             safe(r, "Total expenditure",             "Total expenditure"),
-            "Diphtheria":                    safe(r, "Diphtheria ",                   "Diphtheria"),
-            "HIV/AIDS":                      safe(r, " HIV/AIDS",                     "HIV/AIDS"),
-            "GDP":                           safe(r, "GDP",                           "GDP"),
-            "Population":                    safe(r, "Population",                    "Population"),
-            "thinness  1-19 years":          safe(r, " thinness  1-19 years",         "thinness  1-19 years"),
-            "Income composition of resources": safe(r, "Income composition of resources", "Income composition of resources"),
-            "Schooling":                     safe(r, "Schooling",                     "Schooling"),
+            "Year":                            float(r["Year"]),
+            "Status":                          status_enc,
+            "Adult Mortality":                 safe(r, "Adult Mortality",               "Adult Mortality"),
+            "Alcohol":                         safe(r, "Alcohol",                       "Alcohol"),
+            "percentage expenditure":          safe(r, "percentage expenditure",        "percentage expenditure"),
+            "Hepatitis B":                     safe(r, "Hepatitis B",                   "Hepatitis B"),
+            "Measles":                         safe(r, "Measles",                       "Measles"),
+            "BMI":                             safe(r, " BMI ",                         "BMI"),
+            "under-five deaths":               safe(r, "under-five deaths",             "under-five deaths"),
+            "Polio":                           safe(r, "Polio",                         "Polio"),
+            "Total expenditure":               safe(r, "Total expenditure",             "Total expenditure"),
+            "Diphtheria":                      safe(r, "Diphtheria ",                   "Diphtheria"),
+            "HIV/AIDS":                        safe(r, " HIV/AIDS",                     "HIV/AIDS"),
+            "GDP":                             safe(r, "GDP",                           "GDP"),
+            "Population":                      safe(r, "Population",                    "Population"),
+            "thinness  1-19 years":            safe(r, " thinness  1-19 years",         "thinness  1-19 years"),
+            "Income composition of resources": safe(r, "Income composition of resources","Income composition of resources"),
+            "Schooling":                       safe(r, "Schooling",                     "Schooling"),
         }
 
         predicted = predict(input_dict)
@@ -331,8 +363,8 @@ with tab2:
         with r2:
             st.plotly_chart(make_gauge(result), use_container_width=True, key="pred_gauge")
         with r3:
-            diff  = result - 69.22
-            sign  = "+" if diff >= 0 else ""
+            diff   = result - 69.22
+            sign   = "+" if diff >= 0 else ""
             dclass = "delta-pos" if diff >= 0 else "delta-neg"
             st.write("")
             st.markdown(f'<div class="delta-box {dclass}">{sign}{diff:.1f} yrs vs global avg</div>', unsafe_allow_html=True)
@@ -409,7 +441,7 @@ with tab3:
             w_gdp    = st.slider("💰 GDP per Capita",    float(STATS["GDP"]["min"]),              float(STATS["GDP"]["max"]),              float(base_inp["GDP"]),              step=500.0, key="w_gdp")
             w_am     = st.slider("💀 Adult Mortality",   float(STATS["Adult Mortality"]["min"]),  float(STATS["Adult Mortality"]["max"]),  float(base_inp["Adult Mortality"]),  step=5.0,   key="w_am")
         with lv3:
-            w_income = st.slider("📈 Income Index",      float(STATS["Income composition of resources"]["min"]), float(STATS["Income composition of resources"]["max"]), float(base_inp["Income composition of resources"]), step=0.01, key="w_income")
+            w_income = st.slider("📈 Income Index",         float(STATS["Income composition of resources"]["min"]), float(STATS["Income composition of resources"]["max"]), float(base_inp["Income composition of resources"]), step=0.01, key="w_income")
             w_totexp = st.slider("🏥 Health Expenditure %", float(STATS["Total expenditure"]["min"]), float(STATS["Total expenditure"]["max"]), float(base_inp["Total expenditure"]), step=0.1, key="w_totexp")
 
         run_sim = st.button("🚀 Run Simulation", type="primary", use_container_width=True)
