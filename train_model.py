@@ -4,6 +4,7 @@ Run this ONCE before launching the app.
 It creates model/rf_model.pkl, model/feature_names.json, model/feature_stats.json
 """
 
+
 import json
 import joblib
 import numpy as np
