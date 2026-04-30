@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 import re
 
 
+
 # ── AUTO-TRAIN IF MODEL NOT FOUND ─────────────────────────────────────────────
 if not os.path.exists("model/rf_model.pkl"):
     _df = pd.read_csv("data/Life Expectancy Data.csv")
